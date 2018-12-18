@@ -33,7 +33,7 @@ function isNotEqual($a, $b, string $failMessage = "Provided inputs are equal, ex
 	return ['state' => 'F', 'message' => $failMessage];
 }
 
-function canAccessFile($filePath, string $failMessage = "File cannot be found at the referenced directory") {
+function canAccessFile($filePath, string $failMessage = "File cannot be found at the referenced directory.") {
 	if (file_exists($filePath)) {
 		return ['state' => '.', 'message' => ''];
 	}
@@ -44,7 +44,9 @@ function canAccessFile($filePath, string $failMessage = "File cannot be found at
 /* >Invoke */
 $testResults[] = isNotEqual(1, 0, 'We have some serious problems if 1 == 0');
 $testResults[] = isEqual(1, 1, 'Also serious problems if 1 != 1');
-$testResults[] = canAccessFile('../public/index.php');
+$testResults[] = canAccessFile('../public/index.php', "This is the application entrypoint, we're unable to find it. Perhaps one hasn't been created yet?");
+$testResults[] = canAccessFile('../src/books/moby-dick.txt', "We need to have the story of Moby Dick to load into our page.");
+$testResults[] = canAccessFile('../src/lang/eng-stop-words.txt', "We need a list of English stop words to process our book.");
 
 /* >Results */
 $testStates   = "";
