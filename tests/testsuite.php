@@ -33,9 +33,18 @@ function isNotEqual($a, $b, string $failMessage = "Provided inputs are equal, ex
 	return ['state' => 'F', 'message' => $failMessage];
 }
 
+function canAccessFile($filePath, string $failMessage = "File cannot be found at the referenced directory") {
+	if (file_exists($filePath)) {
+		return ['state' => '.', 'message' => ''];
+	}
+
+	return ['state' => 'F', 'message' => $failMessage];
+}
+
 /* >Invoke */
 $testResults[] = isNotEqual(1, 0, 'We have some serious problems if 1 == 0');
 $testResults[] = isEqual(1, 1, 'Also serious problems if 1 != 1');
+$testResults[] = canAccessFile('../public/index.php');
 
 /* >Results */
 $testStates   = "";
