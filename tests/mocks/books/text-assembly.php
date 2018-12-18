@@ -1,0 +1,22 @@
+<?php
+return [
+    'CHAPTER 1. Loomings.',
+    '',
+    'In an instant the yards swung round; and as the ship half-wheeled upon',
+    'her heel, her three firm-seated graceful masts erectly poised upon',
+    '',
+    "Standing between the knight-heads, Starbuck watched the Pequod’s",
+    "tumultuous way, and Ahab’s also, as he went lurching along the deck.",
+    '',
+    "Standing between the knight-heads, Starbuck watched the Pequod’s",
+    "tumultuous way, and Ahab’s also, as he went lurching along the deck.",
+    '',
+    '',
+    '',
+    '',
+    '',
+    'CHAPTER 2. Test.',
+    '',
+    'her long, ribbed hull, seemed as the three Horatii pirouetting on one',
+    'sufficient steed.',
+];

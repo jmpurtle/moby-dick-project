@@ -53,6 +53,44 @@ function isInFile($needle, $haystack, $failMessage = "String cannot be found in 
 	return ['state' => 'F', 'message' => $failMessage];
 }
 
+function assembleHTML($filePath, $expectedMarkup, $failMessage = "Unable to assemble HTML as expected.") {
+	$bookContents = require_once($filePath);
+
+	$flatBookContents = '';
+	$lastLine = null;
+	$lineBuffer = array();
+	foreach ($bookContents as $line) {
+		if ($line == $lastLine) {
+			continue;
+		}
+
+		if (strpos($line, 'CHAPTER') !== false) {
+			$flatBookContents .= '<h2>' . $line . '</h2>';
+			$lastLine = $line;
+			continue;
+		}
+
+		if (!empty(trim($line))) {
+			$lineBuffer[] = $line;
+		} else if (!empty($lineBuffer)) {
+			$flatBookContents .= '<p>' . implode(' ', $lineBuffer) . '</p>';
+			$lineBuffer = array();
+		}
+
+		$lastLine = $line;
+	}
+	if (!empty($lineBuffer)) {
+		$flatBookContents .= '<p>' . implode(' ', $lineBuffer) . '</p>';
+	}
+
+	if ($flatBookContents == $expectedMarkup) {
+		return ['state' => '.', 'message' => ''];
+	}
+
+	echo $flatBookContents;
+	return ['state' => 'F', 'message' => $failMessage];
+}
+
 /* >Config */
 $serverRoot   = dirname(__DIR__);
 
@@ -66,6 +104,7 @@ $testResults[] = canAccessFile($serverRoot . '/app/autoload.php', "The autoloade
 $testResults[] = canAccessFile($serverRoot . '/app/appEnv.php', "We'll also need the application environment values to use.");
 $testResults[] = isInFile('CHAPTER 1. Loomings.', $serverRoot . '/tests/mocks/books/eng-moby-dick.txt');
 $testResults[] = isInFile('End of Project Gutenberg', $serverRoot . '/tests/mocks/books/eng-moby-dick.txt');
+$testResults[] = assembleHTML($serverRoot . '/tests/mocks/books/text-assembly.php', "<h2>CHAPTER 1. Loomings.</h2><p>In an instant the yards swung round; and as the ship half-wheeled upon her heel, her three firm-seated graceful masts erectly poised upon</p><p>Standing between the knight-heads, Starbuck watched the Pequod’s tumultuous way, and Ahab’s also, as he went lurching along the deck.</p><p>Standing between the knight-heads, Starbuck watched the Pequod’s tumultuous way, and Ahab’s also, as he went lurching along the deck.</p><h2>CHAPTER 2. Test.</h2><p>her long, ribbed hull, seemed as the three Horatii pirouetting on one sufficient steed.</p>");
 
 /* >Results */
 $testStates   = "";
