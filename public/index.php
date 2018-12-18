@@ -73,6 +73,10 @@ if (empty($path)) {
 	// Default dispatch response generated for valid HTTP requests.
 	$defaultController = new \Http\Controllers\RootController();
 	$dispatchResponse = $defaultController();
+	/* This interaction here is an example of the final steps in dispatching
+	 * a response (defaultController is $obj, null is $previous, $isEndpoint
+	 * is true).
+	 */
 
 	$response = array_merge($response, $dispatchResponse);
 }
