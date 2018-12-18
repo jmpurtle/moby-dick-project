@@ -41,6 +41,18 @@ function canAccessFile($filePath, string $failMessage = "File cannot be found at
 	return ['state' => 'F', 'message' => $failMessage];
 }
 
+function isInFile($needle, $haystack, $failMessage = "String cannot be found in file.") {
+	$haystackPile = fopen($haystack, 'r');
+
+	while (($line = fgets($haystackPile)) !== false) {
+		if (strpos($line, $needle) !== false) {
+			return ['state' => '.', 'message' => ''];
+		}
+	}
+
+	return ['state' => 'F', 'message' => $failMessage];
+}
+
 /* >Config */
 $serverRoot   = dirname(__DIR__);
 
@@ -52,6 +64,8 @@ $testResults[] = canAccessFile($serverRoot . '/src/books/eng-moby-dick.txt', "We
 $testResults[] = canAccessFile($serverRoot . '/src/lang/eng-stop-words.txt', "We need a list of English stop words to process our book.");
 $testResults[] = canAccessFile($serverRoot . '/app/autoload.php', "The autoloader is vital to the application, we need to have it available.");
 $testResults[] = canAccessFile($serverRoot . '/app/appEnv.php', "We'll also need the application environment values to use.");
+$testResults[] = isInFile('CHAPTER 1. Loomings.', $serverRoot . '/tests/mocks/books/eng-moby-dick.txt');
+$testResults[] = isInFile('End of Project Gutenberg', $serverRoot . '/tests/mocks/books/eng-moby-dick.txt');
 
 /* >Results */
 $testStates   = "";
