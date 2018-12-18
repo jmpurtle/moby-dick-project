@@ -1,7 +1,7 @@
 <?php
 spl_autoload_register(function ($className) {
 	
-	$className = str_replace('\\', '/'. $className);
+	$className = str_replace('\\', '/', $className);
 	$vendors   = dirname(__DIR__) . '/vendor/';
 
 	if (file_exists($vendors . $className . '.php')) {

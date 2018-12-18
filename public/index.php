@@ -71,11 +71,8 @@ $dispatchResponse = [];
 
 if (empty($path)) {
 	// Default dispatch response generated for valid HTTP requests.
-	$dispatchResponse = [
-		'HTTPStatusCode' => '200',
-		'view'           => 'home/index',
-		'title'          => 'Great White Whale - Holy Grail'
-	];
+	$defaultController = new \Http\Controllers\RootController();
+	$dispatchResponse = $defaultController();
 
 	$response = array_merge($response, $dispatchResponse);
 }
