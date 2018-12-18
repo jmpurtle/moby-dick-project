@@ -41,12 +41,17 @@ function canAccessFile($filePath, string $failMessage = "File cannot be found at
 	return ['state' => 'F', 'message' => $failMessage];
 }
 
+/* >Config */
+$serverRoot   = dirname(__DIR__);
+
 /* >Invoke */
 $testResults[] = isNotEqual(1, 0, 'We have some serious problems if 1 == 0');
 $testResults[] = isEqual(1, 1, 'Also serious problems if 1 != 1');
 $testResults[] = canAccessFile('../public/index.php', "This is the application entrypoint, we're unable to find it. Perhaps one hasn't been created yet?");
-$testResults[] = canAccessFile('../src/books/eng-moby-dick.txt', "We need to have the story of Moby Dick to load into our page.");
-$testResults[] = canAccessFile('../src/lang/eng-stop-words.txt', "We need a list of English stop words to process our book.");
+$testResults[] = canAccessFile($serverRoot . '/src/books/eng-moby-dick.txt', "We need to have the story of Moby Dick to load into our page.");
+$testResults[] = canAccessFile($serverRoot . '/src/lang/eng-stop-words.txt', "We need a list of English stop words to process our book.");
+$testResults[] = canAccessFile($serverRoot . '/app/autoload.php', "The autoloader is vital to the application, we need to have it available.");
+$testResults[] = canAccessFile($serverRoot . '/app/appEnv.php', "We'll also need the application environment values to use.");
 
 /* >Results */
 $testStates   = "";
