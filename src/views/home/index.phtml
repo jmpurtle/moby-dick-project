@@ -4,7 +4,10 @@
 </vue-data>
 <div id="pageContainer">
   <img class="head-whale" src="assets/images/whitewhale.jpg" />
-  <button @click="show = !show">Read the story</button>
+  <div class="btn-container">
+    <button @click="show = true">See the data</button>
+    <button @click="show = false">Read the story</button>
+  </div>
   <transition name="fade" mode="out-in">
     <div v-if="show" key="1">
       <h1>What's the top 100 words in Moby Dick?</h1>
@@ -26,7 +29,9 @@
         </transition-group>
     </div>
     <div v-else key="2" v-cloak>
-      {== $flatBookContents =}
+      <div class="cw">
+        {== $flatBookContents =}
+      </div>
     </div>
   </transition>
 </div>
