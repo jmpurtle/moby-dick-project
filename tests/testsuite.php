@@ -54,7 +54,7 @@ function isInFile($needle, $haystack, $failMessage = "String cannot be found in 
 }
 
 function assembleHTML($filePath, $expectedMarkup, $failMessage = "Unable to assemble HTML as expected.") {
-	$bookContents = require_once($filePath);
+	$bookContents = include($filePath);
 
 	$flatBookContents = '';
 	$lastLine = null;
@@ -87,8 +87,40 @@ function assembleHTML($filePath, $expectedMarkup, $failMessage = "Unable to asse
 		return ['state' => '.', 'message' => ''];
 	}
 
-	echo $flatBookContents;
 	return ['state' => 'F', 'message' => $failMessage];
+}
+
+function filterStopWords($stopWordsFile, $haystack, $expected, $failMessage = "Stop words filtering did not catch all as expected.") {
+	$stopWordsFH = fopen($stopWordsFile, 'r');
+	$stopWordsSet = array();
+	while (($line = fgets($stopWordsFH)) !== false) {
+		if ((strpos($line, "#") !== false) || (empty(trim($line)))) {
+			continue;
+		}
+		$stopWordsSet[] = preg_replace( "/\r|\n/", "", $line);
+	}
+	fclose($stopWordsFH);
+
+	$haystackPile = include($haystack);
+	$denseHaystackPile = array_filter($haystackPile);
+	$bodyText = implode(' ', $denseHaystackPile);
+
+	$result = preg_replace('/\b('. implode('|', $stopWordsSet) . ')\b/', "", strtolower($bodyText));
+
+	//Removing common punctuations and spaces
+	$result = preg_replace('/[^ a-zA-Z-]/', '', $result);
+
+	$bodyTextSet = array_filter(explode(' ', $result));
+
+	// Reindexes all the values for match
+	$bodyTextSet = array_values($bodyTextSet);
+
+	if ($bodyTextSet == $expected) {
+		return ['state' => '.', 'message' => ''];
+	}
+
+	return ['state' => 'F', 'message' => $failMessage];
+
 }
 
 /* >Config */
@@ -105,6 +137,7 @@ $testResults[] = canAccessFile($serverRoot . '/app/appEnv.php', "We'll also need
 $testResults[] = isInFile('CHAPTER 1. Loomings.', $serverRoot . '/tests/mocks/books/eng-moby-dick.txt');
 $testResults[] = isInFile('End of Project Gutenberg', $serverRoot . '/tests/mocks/books/eng-moby-dick.txt');
 $testResults[] = assembleHTML($serverRoot . '/tests/mocks/books/text-assembly.php', "<h2>CHAPTER 1. Loomings.</h2><p>In an instant the yards swung round; and as the ship half-wheeled upon her heel, her three firm-seated graceful masts erectly poised upon</p><p>Standing between the knight-heads, Starbuck watched the Pequod’s tumultuous way, and Ahab’s also, as he went lurching along the deck.</p><p>Standing between the knight-heads, Starbuck watched the Pequod’s tumultuous way, and Ahab’s also, as he went lurching along the deck.</p><h2>CHAPTER 2. Test.</h2><p>her long, ribbed hull, seemed as the three Horatii pirouetting on one sufficient steed.</p>");
+$testResults[] = filterStopWords($serverRoot . '/tests/mocks/lang/eng-stop-words.txt', $serverRoot . '/tests/mocks/books/text-assembly.php', array('chapter','loomings','instant','yards','swung','round','ship','half-wheeled','heel','firm-seated','graceful','masts','erectly','poised','standing','knight-heads','starbuck','watched','pequod','tumultuous','ahab','lurching','deck','standing','knight-heads','starbuck','watched','pequod','tumultuous','ahab','lurching','deck','chapter','test','ribbed','hull','horatii','pirouetting','sufficient','steed'));
 
 /* >Results */
 $testStates   = "";
