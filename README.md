@@ -20,3 +20,8 @@ Commits are to be made by using a Red - Green - Commit process. We should not be
 If you cannot clearly articulate the product risk associated with a test failing then do not include it in the test suite.
 
 Vendor dependencies, due to the small size of this project, should be bundled explicitly so we can avoid issues related to differences in versions and security concerns.
+
+## Usage
+Clone the repository to your desktop and use a local web server with the document root pointed at /public to view the webpage.
+
+To run tests, navigate to the tests directory in your command line tool and run php testsuite.php
