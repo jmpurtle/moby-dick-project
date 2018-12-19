@@ -54,6 +54,7 @@ namespace Http\Controllers {
 				$stopWordsSet[] = preg_replace( "/\r|\n/", "", $line);
 			}
 			fclose($stopWordsFH);
+			$stopWordsSet[] = 'll';
 
 			$denseBookContents = array_filter($bookContents);
 			$bodyText = implode(' ', $denseBookContents);
@@ -69,16 +70,18 @@ namespace Http\Controllers {
 			arsort($wordFreq);
 
 			$finalWordList = array_slice($wordFreq, 0, 100);
-			$flatBookContents = '';
+			$jsonWordList = array();
+			$keyid = 0;
 			foreach ($finalWordList as $word => $occurances) {
-				$flatBookContents .= "<p>The word &ldquo;" . $word . "&rdquo; appeared " . $occurances . " times!</p>";
+				$jsonWordList[] = array("word" => $word, "occurances" => $occurances, "key" => $keyid);
+				$keyid++;
 			}
 
 			return [
 				'HTTPStatusCode' => '200',
 				'view'           => 'home/index',
 				'title'          => 'Great White Whale - Holy Grail',
-				'bookContents'   => $flatBookContents
+				'bookContents'   => json_encode($jsonWordList)
 			];
 
 		}

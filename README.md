@@ -9,6 +9,8 @@ Language: PHP
 Approach: Test Driven Development  
 Approved Dependencies:  
 - PHPTenjin v. 0.0.2  
+- Vue.js v. 2.5.21 included via CDN
+- jQuery v. 3.3.1 included via CDN
 
 Deadline: Wednesday, December 19th, EOD (48 hours)  
 

@@ -1,2 +1,21 @@
 <?php //@ARGS _content, context, title, bookContents ?>
+<vue-data>
 {== $bookContents =}
+</vue-data>
+<div id="pageContainer">
+  <transition-group
+    appear
+    class="gallery"
+    name="staggered-fade"
+    tag="ul"
+    v-bind:css="false"
+    v-on:before-enter="beforeEnter"
+    v-on:enter="enter"
+    v-on:leave="leave">
+      <li
+        v-for="(item, index) in items"
+        v-bind:key="item.key"
+        v-bind:data-index="index">
+        The word "{{item.word}}" appeared {{item.occurances}} times!
+      </li>
+</div>

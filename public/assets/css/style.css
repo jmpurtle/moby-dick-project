@@ -89,3 +89,6 @@ p, h2 {
 h2 {
   font-size: 1.5em;
 }
+vue-data {
+  display: none;
+}
