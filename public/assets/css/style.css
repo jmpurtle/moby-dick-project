@@ -82,6 +82,17 @@ table {
 html {
   font-family: 'Montserrat', sans-serif;
   font-weight: 300;
+  background-color: #aec6cf;
+  color: #ffffff;
+}
+#pageContainer {
+  padding: 65px 0;
+}
+h1 {
+  display: block;
+  font-size: 3em;
+  text-align: center;
+  padding-top: 30px;
 }
 p, h2 {
   margin-bottom: 1em;
@@ -90,5 +101,25 @@ h2 {
   font-size: 1.5em;
 }
 vue-data {
+  display: none;
+}
+ul {
+  width: 100%;
+  max-width: 480px;
+  padding: 30px 15px 0px 15px;
+  margin: 0 auto;
+  text-align: center;
+}
+li {
+  line-height: 1.5;
+}
+.head-whale {
+  display: block;
+  margin: 0 auto;
+  border-radius: 100%;
+  max-width: 280px;
+  max-height: 280px;
+}
+[v-cloak] {
   display: none;
 }

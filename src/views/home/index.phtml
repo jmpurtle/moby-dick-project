@@ -3,15 +3,17 @@
 {== $bookContents =}
 </vue-data>
 <div id="pageContainer">
+  <img class="head-whale" src="assets/images/whitewhale.jpg" />
+  <h1>What's the top 100 words in Moby Dick?</h1>
   <transition-group
     appear
-    class="gallery"
     name="staggered-fade"
     tag="ul"
     v-bind:css="false"
     v-on:before-enter="beforeEnter"
     v-on:enter="enter"
-    v-on:leave="leave">
+    v-on:leave="leave"
+    v-cloak>
       <li
         v-for="(item, index) in items"
         v-bind:key="item.key"
