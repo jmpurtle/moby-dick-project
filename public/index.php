@@ -22,6 +22,11 @@ $vendorRoot   = $serverRoot . '/vendor';
 
 require_once($serverRoot . '/app/autoload.php');
 $config       = require_once($serverRoot . '/app/appEnv.php');
+$context      = array(
+	'debug'        => $config['debug'],
+	'documentRoot' => $documentRoot,
+	'serverRoot'   => $serverRoot
+);
 
 // Interpreting Requests
 /* At the moment, there's only one page associated with the application so 
@@ -71,7 +76,7 @@ $dispatchResponse = [];
 
 if (empty($path)) {
 	// Default dispatch response generated for valid HTTP requests.
-	$defaultController = new \Http\Controllers\RootController();
+	$defaultController = new \Http\Controllers\RootController($context);
 	$dispatchResponse = $defaultController();
 	/* This interaction here is an example of the final steps in dispatching
 	 * a response (defaultController is $obj, null is $previous, $isEndpoint
