@@ -1,23 +1,32 @@
-<?php //@ARGS _content, context, title, bookContents ?>
+<?php //@ARGS _content, context, title, bookContents, flatBookContents ?>
 <vue-data>
 {== $bookContents =}
 </vue-data>
 <div id="pageContainer">
   <img class="head-whale" src="assets/images/whitewhale.jpg" />
-  <h1>What's the top 100 words in Moby Dick?</h1>
-  <transition-group
-    appear
-    name="staggered-fade"
-    tag="ul"
-    v-bind:css="false"
-    v-on:before-enter="beforeEnter"
-    v-on:enter="enter"
-    v-on:leave="leave"
-    v-cloak>
-      <li
-        v-for="(item, index) in items"
-        v-bind:key="item.key"
-        v-bind:data-index="index">
-        The word "{{item.word}}" appeared {{item.occurances}} times!
-      </li>
+  <button @click="show = !show">Read the story</button>
+  <transition name="fade" mode="out-in">
+    <div v-if="show" key="1">
+      <h1>What's the top 100 words in Moby Dick?</h1>
+      <transition-group
+        appear
+        name="staggered-fade"
+        tag="ul"
+        v-bind:css="false"
+        v-on:before-enter="beforeEnter"
+        v-on:enter="enter"
+        v-on:leave="leave"
+        v-cloak>
+          <li
+            v-for="(item, index) in items"
+            v-bind:key="item.key"
+            v-bind:data-index="index">
+            The word "{{item.word}}" appeared {{item.occurances}} times!
+          </li>
+        </transition-group>
+    </div>
+    <div v-else key="2" v-cloak>
+      {== $flatBookContents =}
+    </div>
+  </transition>
 </div>

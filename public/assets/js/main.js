@@ -4,6 +4,7 @@ var vueInstance = new Vue({
 	el: '#pageContainer',
 	data() {
 		return {
+			show: true,
 			items: JSON.parse(wordList)
 		}
 	},

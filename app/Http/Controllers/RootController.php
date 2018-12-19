@@ -45,6 +45,33 @@ namespace Http\Controllers {
 
 			}
 
+			$flatBookContents = '';
+			$lastLine = null;
+			$lineBuffer = array();
+			foreach ($bookContents as $line) {
+				if ($line == $lastLine) {
+					continue;
+				}
+
+				if (strpos($line, 'CHAPTER') !== false) {
+					$flatBookContents .= '<h2>' . $line . '</h2>';
+					$lastLine = $line;
+					continue;
+				}
+
+				if (!empty(trim($line))) {
+					$lineBuffer[] = $line;
+				} else if (!empty($lineBuffer)) {
+					$flatBookContents .= '<p>' . implode(' ', $lineBuffer) . '</p>';
+					$lineBuffer = array();
+				}
+
+				$lastLine = $line;
+			}
+			if (!empty($lineBuffer)) {
+				$flatBookContents .= '<p>' . implode(' ', $lineBuffer) . '</p>';
+			}
+
 			$stopWordsFH = fopen($this->context['serverRoot'] . '/src/lang/eng-stop-words.txt', 'r');
 			$stopWordsSet = array();
 			while (($line = fgets($stopWordsFH)) !== false) {
@@ -78,10 +105,11 @@ namespace Http\Controllers {
 			}
 
 			return [
-				'HTTPStatusCode' => '200',
-				'view'           => 'home/index',
-				'title'          => 'Great White Whale - Holy Grail',
-				'bookContents'   => json_encode($jsonWordList)
+				'HTTPStatusCode'   => '200',
+				'view'             => 'home/index',
+				'title'            => 'Great White Whale - Holy Grail',
+				'bookContents'     => json_encode($jsonWordList),
+				'flatBookContents' => $flatBookContents
 			];
 
 		}
